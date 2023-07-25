@@ -5,3 +5,4 @@ const initWatcher = (initState) => {
     
   });
 };
+export default initWatcher;
