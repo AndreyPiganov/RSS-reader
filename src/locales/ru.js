@@ -8,9 +8,8 @@ export default {
       },
       form:{
         status:{
-          ready: 'Готов к работе',
-          processing: 'Загружаем контент...',
-          success: 'RSS загружен',
+          processing: 'Проверяем, подготавливаем, загружаем ...',
+          success: 'RSS успешно загружен',
         },
         error:{
           validation:{
