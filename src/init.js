@@ -6,7 +6,7 @@ import i18next from "i18next";
 
 import resources from './locales/index.js';
 
-import validate from './lib/validate.js';
+import validate from './libs/validate.js';
 
 import parser from './parser.js';
 
