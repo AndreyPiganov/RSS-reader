@@ -49,9 +49,18 @@ const init = async () =>{
         axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`, {timeout: defaultTimeout})
         .then(response => {
             const data = response.data
-            if (data.status.content_type.includes('rss') || data.status.content_type.includes('xml')) return data
+            if (data.status.content_type.includes('rss') || data.status.content_type.includes('xml')){
+                const contents = data.contents;
+                const parseContent = parser(contents);
+                console.log(contents);
+            }
+            throw new Error('parse')
           })
-          .then(data => console.log(data.contents));
+          .catch((error) => {
+            const codeError = error.message.split(' ')[0];
+            watcherState.form.error = codeError;
+            watcherState.form.state = 'failed';
+          })
     }
     elements.form.addEventListener('submit', async (event) =>{
         event.preventDefault();
@@ -68,21 +77,6 @@ const init = async () =>{
         watcherState.form.error = error.message;
         watcherState.form.state = 'failed';
     }
-        /*.then(() => {
-            watcherState.form.error = '';
-            watcherState.form.state = 'adding';
-        })
-        .catch((err) => {
-            watcherState.form.error = err.message;
-            watcherState.form.state = 'failed';
-        })
-        axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
-        .then(response => {
-            if (response.ok) return response.json()
-            throw new Error('Network response was not ok.')
-          })
-          .catch((err) => console.log(err.m))
-          */
     })
 } 
 export default init;

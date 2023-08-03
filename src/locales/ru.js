@@ -14,8 +14,8 @@ export default {
         error:{
           url: 'Ссылка должна быть валидным url',
           unique: 'RSS уже существует',
-          network: 'Ошибка сети',
-          parsing: 'Ресурс не содержит валидный RSS',
+          timeout: 'Ошибка сети',
+          parse: 'Ресурс не содержит валидный RSS',
         },
       },
       AppName: 'RSS агрегатор',
