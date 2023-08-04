@@ -16,6 +16,7 @@ const initWatcher = (initState, elements, i18nInst) => {
         elements.submit.setAttribute('disabled', '');
         break;
       case 'success':
+        elements.form.reset();
         elements.feedback.classList.add('text-success');
         elements.feedback.textContent = i18nInst.t('form.status.success');
         break;

@@ -6,7 +6,13 @@ const parser = (data) =>{
     const parseContent = domParser.parseFromString(contents, content_type);
     const title = parseContent.querySelector('title').textContent
     const description = parseContent.querySelector('description').textContent;
-    console.log(parseContent)
-    return {feeds: {title: title, description: description}};
+    const items = parseContent.querySelectorAll('item');
+    const objects = Array.from(items).map((item) => {
+        const title = item.querySelector('title').textContent;
+        const link = item.querySelector('link').textContent;
+        const description = item.querySelector('description').textContent;
+        return {title, description, link};
+    })
+    return {feeds: {title: title, description: description}, posts: objects};
 }
 export default parser;

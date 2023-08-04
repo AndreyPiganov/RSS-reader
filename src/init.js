@@ -14,6 +14,8 @@ import axios from 'axios';
 
 import Feeds from './components/Feeds.js';
 
+import Posts from './components/Posts.js';
+
 const init = async () =>{
     const defaultTimeout = 10000;
     const updateInterval = 10000;
@@ -25,7 +27,7 @@ const init = async () =>{
         form:{
             state: 'filling', error: '',
         },
-        posts: [],
+        posts: new Posts(),
         feeds: new Feeds(),
     }
 
@@ -58,10 +60,18 @@ const init = async () =>{
         }
           })
           .then((content) =>{
+            console.log(content);
             const feeds = state.feeds;
+            const posts = state.posts;
             feeds.addFeed(content.feeds);
-            elements.feeds.innerHTML = ''
+            content.posts.forEach((post) =>{
+                posts.addPost(post);
+            })
+            elements.feeds.innerHTML = '';
+            elements.posts.innerHTML = '';
             elements.feeds.appendChild(feeds.toHTML());
+            console.log(posts.getPosts());
+            elements.posts.appendChild(posts.toHTML())
             watcherState.form.error = '';
             watcherState.form.state = 'success';
           })
