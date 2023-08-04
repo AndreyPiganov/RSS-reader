@@ -47,22 +47,6 @@ const init = async () =>{
 
     const watcherState = initWatcher(state, elements ,i18nextInstance);
 
-   /* const render = (elements,name) =>{
-        const container = document.createElement('div');
-        const div = document.createElement('div');
-        const h2 = document.createElement('h2');
-        const ul = document.createElement('ul');
-        container.classList.add('card', 'border-0');
-        div.classList.add('card-body');
-        h2.classList.add('card-title', 'h4');
-        ul.classList.add('list-group', 'border-0', 'rounded-0');
-        h2.textContent = i18nextInstance.t(`reader.${name}`);
-        div.appendChild(h2);
-        container.appendChild(div);
-        container.appendChild(ul);
-        elements[name].appendChild(container)
-   }*/
-
     const getRss = (link) =>{
         axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`, {timeout: defaultTimeout})
         .then((response) => {
@@ -76,7 +60,10 @@ const init = async () =>{
           .then((content) =>{
             const feeds = state.feeds;
             feeds.addFeed(content.feeds);
+            elements.feeds.innerHTML = ''
             elements.feeds.appendChild(feeds.toHTML());
+            watcherState.form.error = '';
+            watcherState.form.state = 'success';
           })
           .catch((error) => {
             const codeError = error.message.split(' ')[0];

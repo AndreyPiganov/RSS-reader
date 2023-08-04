@@ -33,6 +33,10 @@ const initWatcher = (initState, elements, i18nInst) => {
       case 'form.state':
         formHandler(current);
         break;
+      case 'form.error':
+        if(current !== previous){
+          elements.feedback.textContent = i18nInst.t(`form.error.${current}`);
+        }
         default:
           break;
     }

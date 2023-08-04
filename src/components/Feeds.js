@@ -28,7 +28,9 @@ export default class Feeds{
         h2.classList.add('card-title', 'h4');
         ul.classList.add('list-group', 'border-0', 'rounded-0');
         h2.textContent = 'Фиды'
-        ul.appendChild(...this.feeds);
+        this.feeds.forEach((li) =>{
+            ul.prepend(li);
+        })
         div.appendChild(h2);
         container.appendChild(div);
         container.appendChild(ul);
