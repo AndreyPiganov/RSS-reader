@@ -8,7 +8,6 @@ const initWatcher = (initState, elements, i18nInst) => {
     elements.submit.removeAttribute('disabled');
     switch(value){
       case 'filling':
-        
         break;
       case 'adding':
         elements.input.setAttribute('readonly', 'true');
