@@ -5,5 +5,5 @@ const validate = (url, validLinks) => yup
   .url('url')
   .required('Field is required')
   .test('unique', 'unique', (value) => !validLinks.includes(value))
-  .validateSync(url)
+  .validateSync(url);
 export default validate;
