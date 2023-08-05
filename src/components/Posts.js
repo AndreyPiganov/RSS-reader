@@ -4,6 +4,7 @@ export default class Posts{
     constructor(){
         this.posts = [];
         this.current = [];
+        this.contents = [];
     }
     addPost(object){
         const id = _.uniqueId();
@@ -27,6 +28,7 @@ export default class Posts{
         li.appendChild(a);
         li.appendChild(button);
         this.current.push(li);
+        this.contents.push(object);
     }
     getPosts(){
         return this.posts.flat();

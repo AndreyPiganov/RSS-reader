@@ -53,6 +53,7 @@ const init = async () =>{
     }
 
     const watcherState = initWatcher(state, elements ,i18nextInstance);
+    const contentModal = elements.modal.getModal().querySelector('.modal-content');
 
     const getRss = (link) =>{
         axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`, {timeout: defaultTimeout})
@@ -101,15 +102,25 @@ const init = async () =>{
         watcherState.form.state = 'failed';
     }
     })
-    elements.posts.addEventListener('click', async (event) =>{
+    elements.posts.addEventListener('click', (event) =>{
         if(event.target.tagName !== 'BUTTON'){
             return;
         }
         const id = event.target.dataset.id;
-        const a = document.querySelector(`a[data-id="${id}"]`)
-        const modal = elements.modal;
-        modal.open(a);
-        modal.close();
+        const object = state.posts.contents.find((content) => content.id === id);
+        const a = document.querySelector(`a[data-id="${id}"]`);
+        a.classList.remove('fw-bold');
+        a.classList.add('fw-normal', 'link-secondary');
+        elements.modal.open(object);
     });
+    contentModal.addEventListener('click', (event) =>{
+        if(event.target.tagName !== 'BUTTON'){
+            return
+        }
+        document.body.classList.remove('modal-open');
+        document.body.style = '';
+        document.body.removeChild(document.body.lastChild)
+        elements.modal.close();
+    })
 } 
 export default init;
