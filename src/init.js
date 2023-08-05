@@ -52,7 +52,7 @@ const init = async () => {
   const contentModal = elements.modal.getModal().querySelector('.modal-content');
 
   const getRss = (link) => {
-    axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`, { headers: { 'Cache-Control': 'no-cache', },timeout: defaultTimeout })
+    axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
         const { data } = response;
         if (data.status.content_type.includes('xml')) {
