@@ -17,7 +17,7 @@ import Posts from './components/Posts.js';
 import Modal from './components/Modal.js';
 
 const init = async () => {
-  const defaultTimeout = 10000;
+  const defaultTimeout = 5000;
   // const updateInterval = 10000;
   const defaultLanguage = 'ru';
 
