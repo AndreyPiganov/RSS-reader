@@ -17,6 +17,7 @@ const initWatcher = (initState, elements, i18nInst) => {
         break;
       case 'success':
         elements.form.reset();
+        elements.input.focus();
         elements.feedback.classList.add('text-success');
         elements.feedback.textContent = i18nInst.t('form.status.success');
         break;
