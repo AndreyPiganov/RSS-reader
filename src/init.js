@@ -16,6 +16,8 @@ import Feeds from './components/Feeds.js';
 
 import Posts from './components/Posts.js';
 
+import Modal from './components/Modal.js';
+
 const init = async () =>{
     const defaultTimeout = 10000;
     const updateInterval = 10000;
@@ -25,7 +27,9 @@ const init = async () =>{
     {
         lang: defaultLanguage,
         form:{
-            state: 'filling', error: '',
+            state: 'filling', 
+            error: '',
+            urls: [],
         },
         posts: new Posts(),
         feeds: new Feeds(),
@@ -44,7 +48,8 @@ const init = async () =>{
         feedback: document.querySelector('.feedback'),
         posts: document.querySelector('.posts'),
         feeds: document.querySelector('.feeds'),
-        submit: document.querySelector('button[type=submit]')
+        submit: document.querySelector('button[type=submit]'),
+        modal: new Modal(document.getElementById('modal')),
     }
 
     const watcherState = initWatcher(state, elements ,i18nextInstance);
@@ -54,13 +59,13 @@ const init = async () =>{
         .then((response) => {
             const data = response.data
             if (data.status.content_type.includes('xml')){
+                watcherState.form.urls.push(link);
                 return parser(data);
             }else{
             throw new Error('parse')
         }
           })
           .then((content) =>{
-            console.log(content);
             const feeds = state.feeds;
             const posts = state.posts;
             feeds.addFeed(content.feeds);
@@ -70,7 +75,6 @@ const init = async () =>{
             elements.feeds.innerHTML = '';
             elements.posts.innerHTML = '';
             elements.feeds.appendChild(feeds.toHTML());
-            console.log(posts.getPosts());
             elements.posts.appendChild(posts.toHTML())
             watcherState.form.error = '';
             watcherState.form.state = 'success';
@@ -87,7 +91,7 @@ const init = async () =>{
         const object = Object.fromEntries(formData);
         const link = object.url;
         try{
-        validate(link, state.feeds)
+        validate(link, state.form.urls)
         watcherState.form.error = '';
         watcherState.form.state = 'adding';
         getRss(link)
@@ -97,5 +101,15 @@ const init = async () =>{
         watcherState.form.state = 'failed';
     }
     })
+    elements.posts.addEventListener('click', async (event) =>{
+        if(event.target.tagName !== 'BUTTON'){
+            return;
+        }
+        const id = event.target.dataset.id;
+        const a = document.querySelector(`a[data-id="${id}"]`)
+        const modal = elements.modal;
+        modal.open(a);
+        modal.close();
+    });
 } 
 export default init;

@@ -20,7 +20,7 @@ export default class Posts{
         button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
         button.type = 'button';
         button.textContent = 'Просмотр';
-        button.id = id;
+        button.setAttribute('data-id', id);
         button.setAttribute('data-bs-toggle', 'modal');
         button.setAttribute('data-bs-target', '#modal');
         object.id = id;
@@ -29,7 +29,7 @@ export default class Posts{
         this.current.push(li);
     }
     getPosts(){
-        return this.posts;
+        return this.posts.flat();
     }
     toHTML(){
         this.posts.unshift(this.current);
@@ -43,7 +43,7 @@ export default class Posts{
         h2.classList.add('card-title', 'h4');
         ul.classList.add('list-group', 'border-0', 'rounded-0');
         h2.textContent = 'Посты'
-        this.posts.flat().forEach((li) =>{
+        this.getPosts().forEach((li) =>{
             ul.appendChild(li);
         })
         div.appendChild(h2);
