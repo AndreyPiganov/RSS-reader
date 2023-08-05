@@ -88,8 +88,8 @@ const init = async () => {
     const link = object.url;
     try {
       validate(link, state.form.urls);
-      watcherState.form.error = '';
-      watcherState.form.state = 'adding';
+      /*watcherState.form.error = '';
+      watcherState.form.state = 'adding';*/
       getRss(link);
     } catch (error) {
       watcherState.form.error = error.message;
