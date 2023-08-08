@@ -10,10 +10,6 @@ import validate from './libs/validate.js';
 
 import parser from './parser.js';
 
-import Feeds from './components/Feeds.js';
-
-import Posts from './components/Posts.js';
-
 import Modal from './components/Modal.js';
 
 const init = async () => {
@@ -51,7 +47,7 @@ const init = async () => {
   const watcherState = initWatcher(state, elements, i18nextInstance);
   const contentModal = elements.modal.getModal().querySelector('.modal-content');
 
-  const listRender = (name) =>{
+  const listRender = (name) => {
     const ul = document.createElement('ul');
     const container = document.createElement('div');
     const div = document.createElement('div');
@@ -68,7 +64,7 @@ const init = async () => {
     container.appendChild(div);
     container.appendChild(ul);
     return container;
-  }
+  };
 
   const getRss = (link) => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
