@@ -13,7 +13,7 @@ import parser from './parser.js';
 import Modal from './components/Modal.js';
 
 const init = async () => {
-  const defaultTimeout = 5000;
+  const defaultTimeout = 10000;
   // const updateInterval = 10000;
   const defaultLanguage = 'ru';
 
