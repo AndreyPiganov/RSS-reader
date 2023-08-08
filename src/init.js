@@ -83,6 +83,12 @@ const init = async () => {
         watcherState.form.state = 'success';
       })
       .catch((error) => {
+        if(axios.isAxiosError(error)){
+          elements.input.classList.add('is-invalid');
+          elements.feedback.textContent = 'Ошибка сети';
+          elements.feedback.classList.add('text-danger');
+          return;
+        }
         const codeError = error.message.split(' ')[0];
         watcherState.form.error = codeError;
         watcherState.form.state = 'failed';
