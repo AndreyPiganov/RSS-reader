@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import Feed from './components/Feed.js';
+
+import Post from './components/Post.js';
 
 const parser = (data) => {
   const { contents } = data;
@@ -8,14 +10,8 @@ const parser = (data) => {
   const descriptionFeed = parseContent.querySelector('description').textContent;
   const items = parseContent.querySelectorAll('item');
   const objects = Array.from(items).map((item) => {
-    const id = _.uniqueId();
-    const title = item.querySelector('title').textContent;
-    const link = item.querySelector('link').textContent;
-    const description = item.querySelector('description').textContent;
-    return {
-      title, description, link, id,
-    };
+    return new Post(item);
   });
-  return { feeds: { title: titleFeed, description: descriptionFeed }, posts: objects };
+  return { feeds: new Feed(titleFeed, descriptionFeed), posts: objects };
 };
 export default parser;

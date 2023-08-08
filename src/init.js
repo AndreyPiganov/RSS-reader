@@ -28,8 +28,8 @@ const init = async () => {
       error: '',
       urls: [],
     },
-    posts: new Posts(),
-    feeds: new Feeds(),
+    posts: [],
+    feeds: [],
   };
 
   const i18nextInstance = i18next.createInstance();
@@ -51,6 +51,25 @@ const init = async () => {
   const watcherState = initWatcher(state, elements, i18nextInstance);
   const contentModal = elements.modal.getModal().querySelector('.modal-content');
 
+  const listRender = (name) =>{
+    const ul = document.createElement('ul');
+    const container = document.createElement('div');
+    const div = document.createElement('div');
+    const h2 = document.createElement('h2');
+    container.classList.add('card', 'border-0');
+    div.classList.add('card-body');
+    h2.classList.add('card-title', 'h4');
+    ul.classList.add('list-group', 'border-0', 'rounded-0');
+    h2.textContent = i18nextInstance.t(`reader.${name}`);
+    state[name].flat().forEach((el) => {
+      ul.appendChild(el.renderAsHTML());
+    });
+    div.appendChild(h2);
+    container.appendChild(div);
+    container.appendChild(ul);
+    return container;
+  }
+
   const getRss = (link) => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
@@ -64,14 +83,12 @@ const init = async () => {
       .then((content) => {
         const { feeds } = state;
         const { posts } = state;
-        feeds.addFeed(content.feeds);
-        content.posts.forEach((post) => {
-          posts.addPost(post);
-        });
+        feeds.unshift(content.feeds);
+        posts.unshift(content.posts);
         elements.feeds.innerHTML = '';
         elements.posts.innerHTML = '';
-        elements.feeds.appendChild(feeds.toHTML());
-        elements.posts.appendChild(posts.toHTML());
+        elements.feeds.appendChild(listRender('feeds'));
+        elements.posts.appendChild(listRender('posts'));
         watcherState.form.error = '';
         watcherState.form.state = 'success';
       })
@@ -101,7 +118,7 @@ const init = async () => {
       return;
     }
     const { id } = event.target.dataset;
-    const object = state.posts.contents.find((content) => content.id === id);
+    const object = state.posts.flat().find((content) => content.id === id);
     const a = document.querySelector(`a[data-id="${id}"]`);
     a.classList.remove('fw-bold');
     a.classList.add('fw-normal', 'link-secondary');
