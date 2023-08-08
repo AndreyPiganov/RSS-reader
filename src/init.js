@@ -70,6 +70,7 @@ const init = async () => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
         const content = parser(response.data);
+        state.form.urls.push(link);
         const { feeds } = state;
         const { posts } = state;
         feeds.unshift(content.feeds);
