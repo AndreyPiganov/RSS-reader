@@ -3,10 +3,13 @@ import Feed from './components/Feed.js';
 import Post from './components/Post.js';
 
 const parser = (data) => {
-  console.log(data);
   const { contents } = data;
   const domParser = new DOMParser();
   const parseContent = domParser.parseFromString(contents, 'application/xml');
+  const parseError = parseContent.querySelector('parsererror');
+  if(parseError){
+    throw new Error('parse')
+  }
   const titleFeed = parseContent.querySelector('title').textContent;
   const descriptionFeed = parseContent.querySelector('description').textContent;
   const items = parseContent.querySelectorAll('item');
