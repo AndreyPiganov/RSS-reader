@@ -83,7 +83,7 @@ const init = async () => {
         watcherState.form.state = 'success';
       })
       .catch((error) => {
-        if(axios.isAxiosError(error)){
+        if (axios.isAxiosError(error)) {
           elements.input.classList.add('is-invalid');
           elements.feedback.textContent = 'Ошибка сети';
           elements.feedback.classList.add('text-danger');
