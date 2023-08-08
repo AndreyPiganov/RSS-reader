@@ -3,6 +3,7 @@ import Feed from './components/Feed.js';
 import Post from './components/Post.js';
 
 const parser = (data) => {
+  console.log(data);
   const { contents } = data;
   const domParser = new DOMParser();
   const parseContent = domParser.parseFromString(contents, 'application/xml');

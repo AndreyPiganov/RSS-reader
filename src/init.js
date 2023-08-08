@@ -70,7 +70,7 @@ const init = async () => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
         const { data } = response;
-        if (data.status.content_type.includes('xml')) {
+        if (data.status.content_type.includes('xml') && data.status.http_code !== 404) {
           watcherState.form.urls.push(link);
           return parser(data);
         }
@@ -89,6 +89,7 @@ const init = async () => {
         watcherState.form.state = 'success';
       })
       .catch((error) => {
+        console.log(error);
         const codeError = error.message.split(' ')[0];
         watcherState.form.error = codeError;
         watcherState.form.state = 'failed';
