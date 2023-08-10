@@ -87,7 +87,6 @@ const init = async () => {
           const findPost = posts.flat().find((post) => post.title === title);
           return findPost;
         });
-        console.log(finderPosts);
         state.posts.unshift(...finderPosts);
         finderPosts.forEach((post) => ul.prepend(post.renderAsHTML()));
       })
@@ -139,7 +138,6 @@ const init = async () => {
     }
   });
   elements.posts.addEventListener('click', (event) => {
-    console.log(updatePosts(state.form.urls))
     updatePosts(state.form.urls);
     if (event.target.tagName !== 'BUTTON') {
       return;
@@ -162,6 +160,6 @@ const init = async () => {
   });
   setTimeout(() => {
     updatePosts(state.form.urls);
-  }, updateInterval)
+  }, updateInterval);
 };
 export default init;
