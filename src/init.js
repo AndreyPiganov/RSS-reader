@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import i18next from 'i18next';
 import axios from 'axios';
+import _ from 'lodash';
 import initWatcher from './view.js';
 
 import resources from './locales/index.js';
@@ -66,6 +67,33 @@ const init = async () => {
     return container;
   };
 
+  const updatePosts = (links) => {
+    const urls = links.map((link) => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout }));
+    Promise.all(urls)
+      .then((response) => {
+        const posts = response.map((res) => {
+          const content = parser(res.data);
+          const contentPosts = content.posts;
+          return contentPosts;
+        });
+        const titles = posts.flat().map((post) => post.title);
+        const titlesState = state.posts.flat().map((post) => post.title);
+        const diffTitles = _.difference(titles.flat(), titlesState);
+        if (diffTitles.length === 0) {
+          return;
+        }
+        const finderPosts = diffTitles.map((title) => {
+          const findPost = posts.flat().find((post) => post.title === title);
+          return findPost;
+        });
+        // console.log(finderPosts);
+        // console.log(posts);
+        state.posts.unshift(...finderPosts);
+        const ul = elements.posts.querySelector('ul');
+        finderPosts.forEach((post) => ul.prepend(post.renderAsHTML()));
+      });
+  };
+
   const getRss = (link) => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
@@ -110,6 +138,8 @@ const init = async () => {
     }
   });
   elements.posts.addEventListener('click', (event) => {
+    // console.log(updatePosts(state.form.urls));
+    updatePosts(state.form.urls);
     if (event.target.tagName !== 'BUTTON') {
       return;
     }
