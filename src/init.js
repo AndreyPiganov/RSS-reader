@@ -15,7 +15,7 @@ import Modal from './components/Modal.js';
 
 const init = async () => {
   const defaultTimeout = 10000;
-  // const updateInterval = 10000;
+  const updateInterval = 5000;
   const defaultLanguage = 'ru';
 
   const state = {
@@ -71,6 +71,7 @@ const init = async () => {
     const urls = links.map((link) => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout }));
     Promise.all(urls)
       .then((response) => {
+        const ul = elements.posts.querySelector('ul');
         const posts = response.map((res) => {
           const content = parser(res.data);
           const contentPosts = content.posts;
@@ -86,12 +87,12 @@ const init = async () => {
           const findPost = posts.flat().find((post) => post.title === title);
           return findPost;
         });
-        // console.log(finderPosts);
-        // console.log(posts);
+        console.log(finderPosts);
         state.posts.unshift(...finderPosts);
-        const ul = elements.posts.querySelector('ul');
         finderPosts.forEach((post) => ul.prepend(post.renderAsHTML()));
-      });
+      })
+      .catch((error) => error)
+      .finally(() => setTimeout(() => updatePosts(state.form.urls), updateInterval));
   };
 
   const getRss = (link) => {
@@ -138,7 +139,7 @@ const init = async () => {
     }
   });
   elements.posts.addEventListener('click', (event) => {
-    // console.log(updatePosts(state.form.urls));
+    console.log(updatePosts(state.form.urls))
     updatePosts(state.form.urls);
     if (event.target.tagName !== 'BUTTON') {
       return;
@@ -159,5 +160,8 @@ const init = async () => {
     document.body.removeChild(document.body.lastChild);
     elements.modal.close();
   });
+  setTimeout(() => {
+    updatePosts(state.form.urls);
+  }, updateInterval)
 };
 export default init;
