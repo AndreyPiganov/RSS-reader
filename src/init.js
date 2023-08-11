@@ -58,9 +58,6 @@ const init = async () => {
     h2.classList.add('card-title', 'h4');
     ul.classList.add('list-group', 'border-0', 'rounded-0');
     h2.textContent = i18nextInstance.t(`reader.${name}`);
-    state[name].flat().forEach((el) => {
-      ul.appendChild(el.renderAsHTML());
-    });
     div.appendChild(h2);
     container.appendChild(div);
     container.appendChild(ul);
@@ -103,10 +100,16 @@ const init = async () => {
         const { posts } = state;
         feeds.unshift(content.feeds);
         posts.unshift(content.posts);
-        elements.feeds.innerHTML = '';
-        elements.posts.innerHTML = '';
-        elements.feeds.appendChild(listRender('feeds'));
-        elements.posts.appendChild(listRender('posts'));
+        if (elements.posts.childNodes.length === 0 && elements.feeds.childNodes.length === 0) {
+          elements.posts.appendChild(listRender('posts'));
+          elements.feeds.appendChild(listRender('feeds'));
+        }
+        const listPosts = elements.posts.querySelector('ul');
+        const listFeeds = elements.feeds.querySelector('ul');
+        listFeeds.prepend(content.feeds.renderAsHTML());
+        content.posts.forEach((el) => {
+          listPosts.prepend(el.renderAsHTML());
+        });
         watcherState.form.error = '';
         watcherState.form.state = 'success';
       })

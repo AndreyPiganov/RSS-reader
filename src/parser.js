@@ -14,6 +14,6 @@ const parser = (data) => {
   const descriptionFeed = parseContent.querySelector('description').textContent;
   const items = parseContent.querySelectorAll('item');
   const objects = Array.from(items).map((item) => new Post(item));
-  return { feeds: new Feed(titleFeed, descriptionFeed), posts: objects };
+  return { feeds: new Feed(titleFeed, descriptionFeed), posts: objects.reverse() };
 };
 export default parser;
