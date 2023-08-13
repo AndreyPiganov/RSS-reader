@@ -1,3 +1,5 @@
+import createElement from '../libs/createElement.js';
+
 export default class Modal {
   constructor(modal) {
     this.modal = modal;
@@ -7,8 +9,7 @@ export default class Modal {
     const h5 = this.modal.querySelector('h5');
     const modalBody = this.modal.querySelector('.modal-body');
     const a = this.modal.querySelector('a');
-    const div = document.createElement('div');
-    div.classList.add('modal-backdrop', 'fade', 'show');
+    const div = createElement('div', ['modal-backdrop', 'fade', 'show']);
     document.body.appendChild(div);
     document.body.classList.add('modal-open');
     document.body.style.overflow = 'hidden';

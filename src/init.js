@@ -13,6 +13,8 @@ import parser from './parser.js';
 
 import Modal from './components/Modal.js';
 
+import createElement from './libs/createElement.js';
+
 const init = async () => {
   const defaultTimeout = 10000;
   const updateInterval = 5000;
@@ -49,15 +51,10 @@ const init = async () => {
   const contentModal = elements.modal.getModal().querySelector('.modal-content');
 
   const listRender = (name) => {
-    const ul = document.createElement('ul');
-    const container = document.createElement('div');
-    const div = document.createElement('div');
-    const h2 = document.createElement('h2');
-    container.classList.add('card', 'border-0');
-    div.classList.add('card-body');
-    h2.classList.add('card-title', 'h4');
-    ul.classList.add('list-group', 'border-0', 'rounded-0');
-    h2.textContent = i18nextInstance.t(`reader.${name}`);
+    const ul = createElement('ul', ['list-group', 'border-0', 'rounded-0']);
+    const container = createElement('div', ['card', 'border-0']);
+    const div = createElement('div', ['card-body']);
+    const h2 = createElement('h2', ['card-title', 'h4'], {}, i18nextInstance.t(`reader.${name}`));
     div.appendChild(h2);
     container.appendChild(div);
     container.appendChild(ul);
