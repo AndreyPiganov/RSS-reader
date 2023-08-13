@@ -88,7 +88,7 @@ const init = async () => {
       .finally(() => setTimeout(() => updatePosts(state.form.urls), updateInterval));
   };
 
-  const getRss = (link) => {
+  const renderContent = (link) => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
         const content = parser(response.data);
@@ -101,12 +101,6 @@ const init = async () => {
           elements.posts.appendChild(renderList('posts'));
           elements.feeds.appendChild(renderList('feeds'));
         }
-        const listPosts = elements.posts.querySelector('ul');
-        const listFeeds = elements.feeds.querySelector('ul');
-        listFeeds.prepend(content.feeds.renderAsHTML());
-        content.posts.forEach((el) => {
-          listPosts.prepend(el.renderAsHTML());
-        });
         watcherState.form.state = 'success';
       })
       .catch((error) => {
@@ -129,7 +123,7 @@ const init = async () => {
     try {
       validate(link, state.form.urls);
       watcherState.form.state = 'adding';
-      getRss(link);
+      renderContent(link);
     } catch (error) {
       watcherState.form.error = error.message;
       watcherState.form.state = 'failed';
