@@ -1,6 +1,6 @@
 import onChange from 'on-change';
 
-const formHandler = (value,elements, i18nInst) => {
+const formHandler = (value,elements, i18nInst, initState) => {
   elements.feedback.classList.remove('text-danger', 'text-success', 'text-warning');
   elements.input.classList.remove('is-invalid');
   elements.input.removeAttribute('readonly');
@@ -13,8 +13,14 @@ const formHandler = (value,elements, i18nInst) => {
       elements.submit.setAttribute('disabled', '');
       break;
     case 'success':
+      const listPosts = elements.posts.querySelector('ul');
+      const listFeeds = elements.feeds.querySelector('ul');
       elements.form.reset();
       elements.input.focus();
+      listFeeds.prepend(content.feeds.renderAsHTML());
+      content.posts.forEach((el) => {
+        listPosts.prepend(el.renderAsHTML());
+      });
       elements.feedback.classList.add('text-success');
       elements.feedback.textContent = i18nInst.t('form.status.success');
       break;
@@ -32,7 +38,7 @@ const initWatcher = (initState, elements, i18nInst) => {
   const state = onChange(initState, (path, current, previous) => {
     switch (path) {
       case 'form.state':
-        formHandler(current);
+        formHandler(current, elements, i18nInst, initState);
         break;
       case 'form.error':
         if (current !== previous) {
