@@ -50,7 +50,7 @@ const init = async () => {
   const watcherState = initWatcher(state, elements, i18nextInstance);
   const contentModal = elements.modal.getModal().querySelector('.modal-content');
 
-  const listRender = (name) => {
+  const renderList = (name) => {
     const ul = createElement('ul', ['list-group', 'border-0', 'rounded-0']);
     const container = createElement('div', ['card', 'border-0']);
     const div = createElement('div', ['card-body']);
@@ -98,8 +98,8 @@ const init = async () => {
         feeds.unshift(content.feeds);
         posts.unshift(content.posts);
         if (elements.posts.childNodes.length === 0 && elements.feeds.childNodes.length === 0) {
-          elements.posts.appendChild(listRender('posts'));
-          elements.feeds.appendChild(listRender('feeds'));
+          elements.posts.appendChild(renderList('posts'));
+          elements.feeds.appendChild(renderList('feeds'));
         }
         const listPosts = elements.posts.querySelector('ul');
         const listFeeds = elements.feeds.querySelector('ul');
