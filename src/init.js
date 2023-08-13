@@ -112,7 +112,7 @@ const init = async () => {
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           elements.input.classList.add('is-invalid');
-          elements.feedback.textContent = 'Ошибка сети';
+          elements.feedback.textContent = i18nextInstance.t('form.error.timeout');
           elements.feedback.classList.add('text-danger');
           return;
         }
