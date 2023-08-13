@@ -107,7 +107,6 @@ const init = async () => {
         content.posts.forEach((el) => {
           listPosts.prepend(el.renderAsHTML());
         });
-        watcherState.form.error = '';
         watcherState.form.state = 'success';
       })
       .catch((error) => {
@@ -129,7 +128,6 @@ const init = async () => {
     const link = object.url;
     try {
       validate(link, state.form.urls);
-      watcherState.form.error = '';
       watcherState.form.state = 'adding';
       getRss(link);
     } catch (error) {
@@ -138,7 +136,6 @@ const init = async () => {
     }
   });
   elements.posts.addEventListener('click', (event) => {
-    updatePosts(state.form.urls);
     if (event.target.tagName !== 'BUTTON') {
       return;
     }
