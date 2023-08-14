@@ -26,6 +26,40 @@ const renderList = (name, i18nextInstance) => {
   return container;
 };
 
+const renderContent = (link, state, i18nextInstance, elements) => {
+  axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
+    .then((response) => {
+      const content = parser(response.data);
+      state.form.urls.push(link);
+      const { feeds } = state;
+      const { posts } = state;
+      feeds.unshift(content.feeds);
+      posts.unshift(content.posts);
+      if (elements.posts.childNodes.length === 0 && elements.feeds.childNodes.length === 0) {
+        elements.posts.appendChild(renderList('posts', i18nextInstance));
+        elements.feeds.appendChild(renderList('feeds', i18nextInstance));
+      }
+      const listPosts = elements.posts.querySelector('ul');
+      const listFeeds = elements.feeds.querySelector('ul');
+      listFeeds.prepend(content.feeds.renderAsHTML());
+      content.posts.forEach((el) => {
+        listPosts.prepend(el.renderAsHTML());
+      });
+      watcherState.form.state = 'success';
+    })
+    .catch((error) => {
+      if (axios.isAxiosError(error)) {
+        elements.input.classList.add('is-invalid');
+        elements.feedback.textContent = i18nextInstance.t('form.error.timeout');
+        elements.feedback.classList.add('text-danger');
+        return;
+      }
+      const codeError = error.message.split(' ')[0];
+      watcherState.form.error = codeError;
+      watcherState.form.state = 'failed';
+    });
+};
+
 const init = async () => {
   const defaultTimeout = 10000;
   const updateInterval = 5000;
@@ -87,40 +121,6 @@ const init = async () => {
       .catch((error) => error)
       .finally(() => setTimeout(() => updatePosts(state.form.urls), updateInterval));
   };
-
-  const renderContent = (link) => {
-    axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
-      .then((response) => {
-        const content = parser(response.data);
-        state.form.urls.push(link);
-        const { feeds } = state;
-        const { posts } = state;
-        feeds.unshift(content.feeds);
-        posts.unshift(content.posts);
-        if (elements.posts.childNodes.length === 0 && elements.feeds.childNodes.length === 0) {
-          elements.posts.appendChild(renderList('posts', i18nextInstance));
-          elements.feeds.appendChild(renderList('feeds', i18nextInstance));
-        }
-        const listPosts = elements.posts.querySelector('ul');
-        const listFeeds = elements.feeds.querySelector('ul');
-        listFeeds.prepend(content.feeds.renderAsHTML());
-        content.posts.forEach((el) => {
-          listPosts.prepend(el.renderAsHTML());
-        });
-        watcherState.form.state = 'success';
-      })
-      .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          elements.input.classList.add('is-invalid');
-          elements.feedback.textContent = i18nextInstance.t('form.error.timeout');
-          elements.feedback.classList.add('text-danger');
-          return;
-        }
-        const codeError = error.message.split(' ')[0];
-        watcherState.form.error = codeError;
-        watcherState.form.state = 'failed';
-      });
-  };
   elements.form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -129,7 +129,7 @@ const init = async () => {
     try {
       validate(link, state.form.urls);
       watcherState.form.state = 'adding';
-      renderContent(link);
+      renderContent(link,state, i18nextInstance, elements);
     } catch (error) {
       watcherState.form.error = error.message;
       watcherState.form.state = 'failed';
