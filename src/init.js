@@ -88,7 +88,7 @@ const init = async () => {
       .finally(() => setTimeout(() => updatePosts(state.form.urls), updateInterval));
   };
 
-  const getRss = (link) => {
+  const renderContent = (link) => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout })
       .then((response) => {
         const content = parser(response.data);
@@ -129,7 +129,7 @@ const init = async () => {
     try {
       validate(link, state.form.urls);
       watcherState.form.state = 'adding';
-      getRss(link);
+      renderContent(link);
     } catch (error) {
       watcherState.form.error = error.message;
       watcherState.form.state = 'failed';
