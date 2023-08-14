@@ -99,7 +99,7 @@ const init = async () => {
         posts.unshift(content.posts);
         if (elements.posts.childNodes.length === 0 && elements.feeds.childNodes.length === 0) {
           elements.posts.appendChild(renderList('posts', i18nextInstance));
-          elements.feeds.appendChild(renderList('feeds',i18nextInstance));
+          elements.feeds.appendChild(renderList('feeds', i18nextInstance));
         }
         const listPosts = elements.posts.querySelector('ul');
         const listFeeds = elements.feeds.querySelector('ul');
