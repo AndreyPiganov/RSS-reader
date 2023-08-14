@@ -1,6 +1,5 @@
 import onChange from 'on-change';
 
-
 const formHandler = (value, elements, i18nInst, initState) => {
   elements.feedback.classList.remove('text-danger', 'text-success', 'text-warning');
   elements.input.classList.remove('is-invalid');
