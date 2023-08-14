@@ -15,17 +15,6 @@ import Modal from './components/Modal.js';
 
 import createElement from './libs/createElement.js';
 
-const renderList = (name, i18nextInstance) => {
-  const ul = createElement('ul', ['list-group', 'border-0', 'rounded-0']);
-  const container = createElement('div', ['card', 'border-0']);
-  const div = createElement('div', ['card-body']);
-  const h2 = createElement('h2', ['card-title', 'h4'], {}, i18nextInstance.t(`reader.${name}`));
-  div.appendChild(h2);
-  container.appendChild(div);
-  container.appendChild(ul);
-  return container;
-};
-
 const init = async () => {
   const defaultTimeout = 10000;
   const updateInterval = 5000;
@@ -60,6 +49,17 @@ const init = async () => {
 
   const watcherState = initWatcher(state, elements, i18nextInstance);
   const contentModal = elements.modal.getModal().querySelector('.modal-content');
+
+  const renderList = (name, i18nextInstance) => {
+    const ul = createElement('ul', ['list-group', 'border-0', 'rounded-0']);
+    const container = createElement('div', ['card', 'border-0']);
+    const div = createElement('div', ['card-body']);
+    const h2 = createElement('h2', ['card-title', 'h4'], {}, i18nextInstance.t(`reader.${name}`));
+    div.appendChild(h2);
+    container.appendChild(div);
+    container.appendChild(ul);
+    return container;
+  };
 
   const updatePosts = (links) => {
     const urls = links.map((link) => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, { timeout: defaultTimeout }));
